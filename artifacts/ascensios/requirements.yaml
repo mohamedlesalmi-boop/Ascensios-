@@ -1,0 +1,18 @@
+packages:
+  "recharts": "For analytics and progress tracking charts"
+  "framer-motion": "For smooth transitions and layout animations"
+  "date-fns": "For date manipulation and formatting in the schedule"
+  "clsx": "Class merging utility"
+  "tailwind-merge": "Class merging utility"
+  "react-hook-form": "Form handling"
+  "@hookform/resolvers": "Zod validation for forms"
+  "zod": "Schema validation"
+  "uuid": "For generating unique IDs for local storage items"
+  "@types/uuid": "Types for uuid"
+
+images: []
+
+notes:
+  - Frontend-only implementation using localStorage for data persistence
+  - Implements a simulated API layer to mimic a real backend with React Query
+  - Dark mode is default, Jira-inspired flat design system

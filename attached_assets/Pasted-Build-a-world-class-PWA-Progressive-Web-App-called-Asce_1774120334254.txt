@@ -1,0 +1,235 @@
+Build a world-class PWA (Progressive Web App) called Ascensios using HTML, CSS, and vanilla JavaScript. It must work on iPhone via Safari "Add to Home Screen" and also look great on desktop. No frameworks except Chart.js via CDN.
+Design Inspiration: Jira — professional, tech-oriented, minimalist. Use Jira's design language, typography, and color discipline.
+
+DESIGN SYSTEM — Jira-Inspired, Minimalist, Techy:
+
+Color palette (exactly 4 colors):
+
+Primary: Jira Blue (#0052CC) — main actions, highlights, focus states
+Secondary: Jira Grey (#626F86) — text, borders, disabled states
+Accent: Jira Green (#36B37E) — success, completion, positive actions
+Dark Base: #FFFFFF background, #F7F8FA light surfaces, #161B22 dark text
+
+
+Font: Use Jira's font stack — -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif
+No gradients, no excessive shadows — flat design with subtle depth via color only
+Borders: 1px solid #E1E4E8 on light, #30363D on dark mode
+Spacing: 8px grid system (8, 16, 24, 32px padding/margins)
+Icons: Clean, minimal, single-color (blue or grey only)
+Desktop: Left sidebar (collapsible), header bar, main content
+Mobile: Bottom sticky nav bar, full-width content, swipeable
+Dark mode default with light mode option
+Zero decorative elements — function-first design
+Professional and techy without being flashy or futuristic-overdone
+
+
+AI INTEGRATION — Google Gemini API (Free Tier):
+
+Integrate Gemini 1.5 Flash via REST API
+API key entered once in Settings, saved to localStorage
+Core AI feature: Voice-to-Schedule Assistant
+
+User clicks 🎤 button on dashboard
+Web Speech API captures voice → converts to text
+Text sent to Gemini with prompt: "Parse this user input and extract: work hours (day + start time + end time), learning goals, studies (courses + days), gym (days + duration), habits. Return as structured JSON."
+Gemini understands intent and context, returns JSON
+App automatically populates schedule with parsed data
+Example: User says "I work Monday to Friday 10 AM to 8 PM, learning C Language and Data Analysis, studies Friday Saturday Sunday"
+Gemini extracts and returns: { work: [...], learning: [...], studies: [...] }
+Schedule updates instantly ✅
+
+
+Additional AI features:
+
+Daily briefing: Gemini suggests priorities based on schedule and deadlines
+Learning roadmaps: When user adds a learning goal, Gemini generates multi-phase milestone plan
+Weekly summary: AI reflects on progress and suggests focus areas
+
+
+All AI content marked with subtle ✨ indicator
+Graceful offline fallback
+
+
+PUSH NOTIFICATIONS — Web Notifications API:
+
+Request permission on first launch
+Service worker handles background notifications
+Customizable reminder timing: 5, 10, 15, 30, 60 minutes before activity
+Notification format: "⏰ Ascensios — C Language session in 15 mins"
+Daily morning briefing at user-set time
+Global and per-category toggles
+Notification history log (last 30 entries)
+
+
+SIDEBAR NAVIGATION (9 items):
+
+⚡ Dashboard — Command center (default)
+🗓️ Schedule — Smart weekly planner (fully editable)
+📚 Studies — Academic tracker
+🎯 Learning — Skill and knowledge goals
+🏋️ Habits — Daily discipline tracker
+📊 Progress — Visual analytics
+⏰ Free Time — Time optimizer
+👥 Community — Social connections
+⚙️ Settings — Full preferences
+
+Sidebar bottom: "📲 Install Ascensios" PWA install button
+
+1. DASHBOARD — Command Center:
+
+Greeting header: "Good morning, [Name]" with date
+Today at a Glance: Next 3 activities with time and color tag
+Quick Stats: 4 cards — Active Goals / Habit Streak / Free Hours / Weekly Score
+AI Briefing Card: Gemini-generated summary of priorities and suggestions
+Progress Snapshot: Mini habit ring, learning progress, schedule fill %
+🎤 Voice Assistant Button: Prominent, accessible, triggers voice input for schedule management
+Quick Add Button: Floating "+" for fast task/habit/goal entry
+
+
+2. SCHEDULE — Smart Weekly Planner (Fully Editable):
+Layout:
+
+Rows (left): Days of week (Monday–Sunday) as sticky labels
+Columns (top): Time frames — Morning (8–12), Afternoon (12–17), Evening (17–21), Night (21–00)
+Each cell shows activity blocks with color: Work (Blue) / Learning (Blue-grey) / Studies (Blue) / Gym (Green) / Habits (Green) / Free (Light grey)
+Today's row highlighted with blue left border
+
+Mobile Optimization:
+
+Swipeable carousel: Show 2 days at a time (Mon–Tue, swipe to Wed–Thu, etc.)
+Each day shows full 8 AM–midnight grid vertically
+Tap any cell to edit
+Edit modal opens with time picker, activity type, duration input
+All forms mobile-optimized with large touch targets
+
+Desktop:
+
+Full 7-day week visible
+Click any cell to edit inline or open modal
+Hover effects showing edit affordance
+
+Editability:
+
+Every cell fully editable — tap/click to modify activity, time, duration
+Drag-to-resize activity blocks (optional, or use modal)
+Delete activity with confirmation
+Edit modal is clean, minimal, Jira-style
+
+Auto-Scheduling Engine — Combined Methodologies:
+
+Time Blocking (Primary): Lock work, lock sleep, distribute learning into gaps
+Spaced Repetition (Learning): Learning goals spread across multiple days for retention, not cramming
+GTD + Eisenhower (Prioritization): High-importance goals get prime time slots, deadlines drive scheduling
+Algorithm:
+
+Priority 1 (Locked): Work shifts
+Priority 2 (Locked): Sleep (7 hrs default)
+Priority 3 (Semi-fixed): Gym, habits
+Priority 4 (Flexible): Learning, studies — distributed using spaced repetition across available slots
+
+
+"🔄 Regenerate" button reshuffles flexible blocks
+"✏️ Edit" on any block for manual override
+
+
+3. STUDIES — Academic Tracker:
+
+Add courses: name, deadline, weekly commitment hours
+Each course card: progress bar, days until deadline (color coded), next assignment due
+Donut chart: overall completion
+Courses auto-populate Schedule grid
+
+
+4. LEARNING — Skill & Knowledge Goals:
+
+Add any goal: C Language, Python, Swimming, Guitar, Data Analysis, etc.
+Per goal: Name, Level (Beginner / Intermediate / Advanced), Target hrs/week, Priority
+AI Roadmap: Gemini generates multi-phase milestone plan on goal creation
+Log hours per session
+Streak counter
+Sessions auto-scheduled using spaced repetition
+
+
+5. HABITS — Daily Discipline:
+
+Add habits: name, frequency (daily / specific days), duration
+One-tap daily check-in ✅
+Streak counter with milestones (7 days 🔥, 30 days 🏆)
+Weekly heatmap grid (GitHub style)
+Completion rate %
+
+
+6. PROGRESS — Visual Analytics:
+
+Line chart: Hours logged per learning goal over time (Chart.js)
+Habit rings: Circular completion per habit (Apple Watch style)
+Time allocation pie: How week was spent across categories
+Ascensios Score: Dynamic 0–100 score shown as donut chart with color zones
+AI Weekly Insight: Gemini-generated progress summary and recommendations
+All charts animate on load
+
+
+7. FREE TIME — Time Optimizer:
+
+Auto-calculates free hours per day
+Daily breakdown list with color bar
+Stacked horizontal bar chart per day: Work / Learning / Gym / Studies / Sleep / Free
+AI suggestion: "Tonight you have 2hrs free — continue C Language Phase 2?"
+
+
+8. COMMUNITY — Social Connections:
+
+Add friends / study partners with name, contact note
+Schedule meetups — appear in Schedule grid
+Social goals tracking
+
+
+9. SETTINGS:
+
+User name
+Gemini API key input (link to aistudio.google.com)
+Sleep target (default 7hrs)
+Wake time (default 8:00 AM)
+Theme: Dark / Light
+Week start: Monday / Sunday
+Notification toggles (global + per-category)
+Reminder default timing
+Notification history
+Export / Import data (JSON backup)
+Reset all data (confirmation)
+
+
+RESPONSIVE DESIGN & MOBILE OPTIMIZATION:
+
+No zoom allowed: Disable pinch-zoom and user-scalable=no in viewport meta tag
+Exception: Allow zoom only on tables/charts if explicitly needed by user
+All forms: large touch targets (min 44x44px), clear labels, no tiny inputs
+All tables: horizontally scrollable on mobile with sticky first column
+All buttons: minimum 48x48px touch target
+Mobile schedule: swipeable carousel, clear day labels
+Desktop schedule: full week visible, mouse-friendly
+No design breakage at any screen size (320px to 2560px)
+Perfect rendering on iPhone, Android, tablets, desktop
+All modals: full-screen on mobile, centered on desktop
+
+
+PWA TECHNICAL REQUIREMENTS:
+
+manifest.json: name "Ascensios", short_name "Ascensios", theme #0052CC, display standalone
+service worker (sw.js): offline caching, background sync, push notifications
+All data in localStorage with clean JSON schema
+PWA install button triggers beforeinstallprompt
+Skeleton loaders while content renders
+Error boundaries — graceful error handling
+Fully accessible: aria labels, keyboard nav, focus states
+Web Speech API for voice input (browser native, free)
+Gemini API REST calls for AI parsing
+
+
+FILE STRUCTURE:
+
+index.html
+style.css
+app.js
+sw.js
+manifest.json
