@@ -1,0 +1,94 @@
+> **CRITICAL FIXES & ENHANCEMENTS NEEDED:**
+>
+> **1. Microphone/Voice Assistant Button**
+> - When user clicks the 🎤 microphone icon, it should:
+> - Check if Gemini API key is set in Settings
+> - If API key is missing, show error modal: "⚠️ Voice Assistant Requires API Key. Add your free Gemini API key in Settings → https://aistudio.google.com"
+> - If API key exists, start Web Speech API recording
+> - Convert speech to text
+> - Send text to Gemini API with prompt: "Parse this user input and extract: work hours (days + times), learning goals, studies sessions, gym times, habits. Return as structured JSON."
+> - Display Gemini's response and auto-populate the schedule with parsed data
+> - Show success message: "✅ Schedule updated from voice input"
+>
+> **2. Quick Add Button (+ Icon)**
+> - When user clicks the floating "+" button, open a modal with options:
+> - "Add Work Shift"
+> - "Add Learning Goal"
+> - "Add Study Session"
+> - "Add Habit"
+> - "Add Gym Session"
+> - "Add Fun Activity"
+> - Each option opens a clean, mobile-friendly form
+> - Forms save data to localStorage and update schedule grid immediately
+>
+> **3. Add Buttons in Sidebar Sections**
+> - Each sidebar section (Studies, Learning, Habits, etc.) should have an "Add" or "+" button
+> - Clicking opens the relevant form
+> - Example: "+" in Learning section opens "Add Learning Goal" form
+> - All forms must be mobile-friendly and save instantly
+>
+> **4. Schedule Grid Text Visibility Fix**
+> - Current white text on blue/green backgrounds is hard to read
+> - Solution: Use dark text (#161B22) on colored backgrounds OR white text with a subtle text-shadow for contrast
+> - Ensure all text in schedule cells is clearly readable without zooming
+> - Test on mobile and desktop
+>
+> **5. Schedule Grid Buttons**
+> - "Today" button: Should scroll/jump to today's row and highlight it
+> - "Auto Schedule" button: Should trigger the priority-based time blocking algorithm and regenerate the schedule
+> - Both buttons must work and show visual feedback (hover effect)
+>
+> **6. Schedule Download as PDF**
+> - Add a "📥 Download Schedule" button in the Schedule section header (next to "Today" and "Auto Schedule")
+> - Clicking generates a PDF of the entire weekly schedule grid
+> - PDF includes: day names, time frames, all activities with colors and times
+> - Use jsPDF library (load via CDN)
+> - File name: "Ascensios-Schedule-[CurrentWeek].pdf"
+>
+> **7. AI Error Handling for All Features**
+> - For Voice Assistant, Chat Bot, AI Suggestions, Learning Roadmaps — if Gemini API key is missing:
+> - Show clear error message: "⚠️ [Feature Name] requires Gemini API key. Add it in Settings → https://aistudio.google.com"
+> - Do NOT crash or fail silently
+> - Provide direct link to get free API key
+>
+> **8. Logo & App Icon — IMPORTANT**
+> - Replace current logo with this design:
+> - **Double Hexagon:** One hexagon inside another (concentric)
+> - **Eye in Center:** A geometric eye shape (👁️) in the middle of the inner hexagon, not the letter "I"
+> - **Radiating Lines/Shapes:** 4-6 ascending lines or arrow-like shapes around the hexagons representing growth, learning, and ascension
+> - **Colors:** Jira Blue (#0052CC) for hexagons and lines, white (#FFFFFF) for the eye
+> - **Style:** Minimalist, geometric, tech-forward, modern
+> - Logo should be:
+> - Generated in SVG format
+> - Used as app icon in manifest.json (192x192, 512x512 sizes)
+> - Displayed in sidebar header next to "Ascensios" text
+> - Used as favicon
+> - Available for download when user installs the PWA
+> - This logo becomes the visual identity of Ascensios
+>
+> **9. Disable Zoom on App (Except Tables)**
+> - Add to HTML head: `<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">`
+> - Exception: Allow pinch-zoom ONLY on schedule table for readability if needed
+> - Prevent accidental zoom that breaks layout on mobile
+>
+> **10. Data Management & Persistence**
+> - All user data (work shifts, learning goals, studies, habits, etc.) saved to localStorage
+> - Data persists indefinitely until user manually deletes
+> - Add optional "Archive Data" in Settings: archive entries older than 30 days
+> - Add "Export Data" button: download all data as JSON backup
+> - Add "Import Data" button: restore from JSON backup
+> - Add "Clear All Data" button with confirmation: "This will delete all data permanently. Are you sure?"
+> - NO automatic deletion — user has full control
+>
+> **11. Mobile Responsiveness**
+> - All forms, modals, buttons, schedule grid fully responsive
+> - No overflow, no broken layouts
+> - Touch-friendly buttons (minimum 44x44px)
+> - Test on iPhone SE, iPhone 14 Pro Max, iPad
+>
+> **12. UX Improvements**
+> - Add loading spinners when AI is processing
+> - Add success toast notifications: "✅ Work shift added"
+> - Add error toast notifications for failed API calls
+> - Ensure all interactive elements have hover/active states
+> - Maintain Jira-inspired minimalist design throughout
