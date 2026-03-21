@@ -155,6 +155,15 @@ export default function VoiceAssistant({ className }: { className?: string }) {
     }
   };
 
+  // Detect if we're inside a restricted iframe where Web Speech API won't work
+  const isRestrictedContext = () => {
+    try {
+      return window.self !== window.top;
+    } catch {
+      return true; // cross-origin iframe
+    }
+  };
+
   const startListening = () => {
     const apiKey = settingsRef.current?.geminiApiKey;
     if (!apiKey?.trim()) {
@@ -164,8 +173,8 @@ export default function VoiceAssistant({ className }: { className?: string }) {
     }
 
     const SRClass = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SRClass) {
-      // Fall back to text input if speech not supported
+    // No speech API, or running inside an iframe — go straight to text input
+    if (!SRClass || isRestrictedContext()) {
       setPhase("text-input");
       setOpen(true);
       return;
@@ -197,11 +206,17 @@ export default function VoiceAssistant({ className }: { className?: string }) {
     };
 
     rec.onerror = (e: any) => {
-      // "no-speech" is not a real error, just no input
+      // "no-speech" is not a real error, just no input yet
       if (e.error === "no-speech") return;
       // "aborted" happens when we call .stop() ourselves — ignore it
       if (e.error === "aborted") return;
-      setErrorMsg(`Microphone error: ${e.error}. Try the keyboard input instead.`);
+      // "network" error happens inside iframes/restricted environments —
+      // silently fall through to text input instead of showing an error
+      if (e.error === "network" || e.error === "service-not-allowed" || e.error === "not-allowed") {
+        setPhase("text-input");
+        return;
+      }
+      setErrorMsg(`Microphone error: ${e.error}.`);
       setPhase("error");
     };
 
