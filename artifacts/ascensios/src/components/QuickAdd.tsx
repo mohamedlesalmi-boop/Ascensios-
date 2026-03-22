@@ -22,11 +22,17 @@ const ACTIVITY_TYPES: { type: ActivityType; label: string; icon: any; color: str
 
 function BlockForm({ type, onSave, onCancel }: { type: ActivityType; onSave: (b: Block) => void; onCancel: () => void }) {
   const [title, setTitle] = useState("");
-  const [days, setDays] = useState<number[]>([new Date().getDay()]);
+  const [days, setDays] = useState<number[]>([1, 2, 3, 4, 5]); // Mon-Fri default
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("10:00");
 
   const toggleDay = (d: number) => setDays(prev => prev.includes(d) ? prev.filter(x => x !== d) : [...prev, d]);
+
+  const presets = [
+    { label: "Mon–Fri", days: [1, 2, 3, 4, 5] },
+    { label: "Weekend", days: [0, 6] },
+    { label: "Every day", days: [0, 1, 2, 3, 4, 5, 6] },
+  ];
 
   const handleSave = () => {
     if (!title.trim() || days.length === 0) return;
@@ -49,19 +55,32 @@ function BlockForm({ type, onSave, onCancel }: { type: ActivityType; onSave: (b:
         />
       </div>
       <div>
-        <label className="text-sm font-medium text-muted-foreground mb-2 block">Days</label>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex items-center justify-between mb-2">
+          <label className="text-sm font-medium text-muted-foreground">Repeats every week on</label>
+          <div className="flex gap-1">
+            {presets.map(p => (
+              <button key={p.label} onClick={() => setDays(p.days)}
+                className="text-[10px] px-2 py-0.5 rounded border border-border text-muted-foreground hover:border-primary/50 hover:text-primary transition-colors">
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex gap-1.5">
           {DAYS.map((d, i) => (
             <button
               key={d}
               onClick={() => toggleDay(i)}
               className={cn(
-                "px-2.5 py-1 rounded-md text-xs font-medium border transition-colors",
+                "flex-1 py-2 rounded-md text-xs font-medium border transition-colors",
                 days.includes(i) ? "bg-primary text-primary-foreground border-primary" : "bg-muted text-muted-foreground border-border hover:border-primary/50"
               )}
             >{d.slice(0, 3)}</button>
           ))}
         </div>
+        <p className="text-[10px] text-muted-foreground mt-1.5">
+          {days.length === 0 ? "Select at least one day" : `Adds to ${days.length} day${days.length > 1 ? "s" : ""} — appears in your weekly schedule every week`}
+        </p>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
@@ -75,7 +94,7 @@ function BlockForm({ type, onSave, onCancel }: { type: ActivityType; onSave: (b:
       </div>
       <div className="flex gap-2 pt-1">
         <Button className="flex-1" onClick={handleSave} disabled={!title.trim() || days.length === 0}>
-          Add {days.length > 1 ? `(${days.length} days)` : ""}
+          Add {days.length > 1 ? `(${days.length} days/week)` : ""}
         </Button>
         <Button variant="outline" onClick={onCancel}>Back</Button>
       </div>

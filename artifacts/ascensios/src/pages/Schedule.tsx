@@ -11,7 +11,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const FULL_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-const HOURS = Array.from({ length: 16 }, (_, i) => i + 6); // 6 AM to 9 PM
+const HOURS = Array.from({ length: 17 }, (_, i) => i + 7); // 7 AM to 11 PM (23:00)
 
 const BLOCK_STYLES: Record<string, { bg: string; text: string; border: string; label: string }> = {
   work:     { bg: "#0052CC", text: "#FFFFFF", border: "#003DB3", label: "Work" },
