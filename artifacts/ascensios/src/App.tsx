@@ -4,6 +4,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { useEffect } from "react";
+import { useBlocks, useSettings } from "@/hooks/use-local-data";
+import { scheduleActivityNotifications } from "@/lib/notifications";
 
 import Dashboard from "@/pages/Dashboard";
 import Schedule from "@/pages/Schedule";
@@ -46,6 +48,18 @@ function ThemeInitializer() {
   return null;
 }
 
+function NotificationInitializer() {
+  const { data: blocks = [] } = useBlocks();
+  const { data: settings } = useSettings();
+  useEffect(() => {
+    if (!settings?.notificationsEnabled || blocks.length === 0) return;
+    if (Notification.permission !== "granted") return;
+    const leadTime = settings.notificationLeadTime ?? 15;
+    scheduleActivityNotifications(blocks, leadTime);
+  }, [blocks, settings?.notificationsEnabled, settings?.notificationLeadTime]);
+  return null;
+}
+
 function Router() {
   return (
     <AppLayout>
@@ -69,6 +83,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeInitializer />
+      <NotificationInitializer />
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
           <Router />

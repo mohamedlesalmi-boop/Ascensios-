@@ -51,6 +51,7 @@ export const settingsSchema = z.object({
   theme: z.enum(["dark", "light"]).default("dark"),
   weekStart: z.enum(["monday", "sunday"]).default("monday"),
   notificationsEnabled: z.boolean().default(true),
+  notificationLeadTime: z.number().default(15), // minutes before activity
 });
 
 export type Block = z.infer<typeof blockSchema>;

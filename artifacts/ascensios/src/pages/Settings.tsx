@@ -8,6 +8,7 @@ import { Save, Download, Trash2, Key, Upload, Archive, AlertTriangle } from "luc
 import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { cn } from "@/lib/utils";
 
 const LS_KEYS = ["settings", "blocks", "courses", "learningGoals", "habits", "friends"] as const;
 
@@ -156,7 +157,7 @@ export default function Settings() {
         <CardHeader>
           <CardTitle className="text-base flex items-center gap-2"><Key className="w-4 h-4" /> AI Integration</CardTitle>
           <CardDescription>
-            Ascensios uses Gemini 1.5 Flash for voice scheduling, roadmaps, and insights.
+            Ascensios uses Gemini 2.0 Flash for voice scheduling, roadmaps, and insights.
             Your key is stored only in your browser.
           </CardDescription>
         </CardHeader>
@@ -211,6 +212,28 @@ export default function Settings() {
             </div>
             <Switch checked={!!formData.notificationsEnabled} onCheckedChange={c => handleChange("notificationsEnabled", c)} />
           </div>
+          {formData.notificationsEnabled && (
+            <div className="space-y-1.5 max-w-sm">
+              <Label>Remind me before activity</Label>
+              <div className="flex gap-2 flex-wrap">
+                {[5, 10, 15, 30].map(mins => (
+                  <button
+                    key={mins}
+                    onClick={() => handleChange("notificationLeadTime", mins)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-md text-sm font-medium border transition-colors",
+                      (formData.notificationLeadTime ?? 15) === mins
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-muted text-muted-foreground border-border hover:border-primary/50"
+                    )}
+                  >{mins} min</button>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                You'll get notified {formData.notificationLeadTime ?? 15} minutes before each scheduled activity
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

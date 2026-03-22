@@ -128,17 +128,27 @@ export default function Learning() {
     setAiLoading(true);
     setRoadmap(null);
     try {
+      const { callGemini } = await import("@/lib/gemini");
       const goalsList = goals.map(g => `${g.name} (${g.level}, ${g.targetHoursPerWeek}h/week)`).join(", ");
-      const prompt = `Create a concise 4-week learning roadmap for: ${goalsList}. Format as plain text bullet points by week. Max 150 words.`;
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.7, maxOutputTokens: 300 } }),
-      });
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "No roadmap generated.";
+      const prompt = `Create a concise 4-week learning roadmap for these goals: ${goalsList}.
+
+Format your response as plain text using this structure:
+Week 1: [Focus area]
+• [Task 1]
+• [Task 2]
+Week 2: [Focus area]
+• [Task 1]
+• [Task 2]
+Week 3: [Focus area]
+• [Task 1]
+Week 4: [Focus area]
+• [Task 1]
+Keep it practical and under 200 words.`;
+      const { text, model } = await callGemini(key, prompt, { temperature: 0.5, maxTokens: 400 });
       setRoadmap(text);
-    } catch {
-      toast({ title: "AI Error", description: "Could not generate roadmap. Try again.", variant: "destructive" });
+      toast({ title: "Roadmap generated", description: `Powered by ${model}` });
+    } catch (err: any) {
+      toast({ title: "AI Error", description: err.message || "Could not generate roadmap.", variant: "destructive" });
     }
     setAiLoading(false);
   };
